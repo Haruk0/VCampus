@@ -3,4 +3,16 @@
 
 作者：宋天昊 谢荣昌 白海云 潘振宇 周扬帆
 
+使用第三方包：
+beautyeye_lnf.jar 
+JTattoo-1.6.11.jar 
+smoothmetal.jar 
+Substance.jar
+commons-lang-2.6.jar
+commons-logging-1.1.3.jar
+hsqldb.jar
+jackcess-2.1.11.jar
+ucanaccess-4.0.4.jar来进行数据库操作。
+
+
 支持局域网联网，请修改客户端\src\connect\connect.java 17行，将hostIP服务器的IP地址。
