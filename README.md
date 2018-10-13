@@ -15,4 +15,4 @@ jackcess-2.1.11.jar
 ucanaccess-4.0.4.jar
 
 
-支持局域网联网，请修改客户端\src\connect\connect.java 17行，将hostIP服务器的IP地址。
+支持局域网联网，请修改客户端\src\connect\connect.java 17行，将hostIP改为服务器的IP地址。
