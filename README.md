@@ -1,8 +1,6 @@
 # VCampus
 东南大学大三短学期课程设计
 
-作者：宋天昊 谢荣昌 白海云 潘振宇 周扬帆
-
 使用第三方包：
 beautyeye_lnf.jar 
 JTattoo-1.6.11.jar 
