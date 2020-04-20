@@ -5,7 +5,7 @@ import messageLei.Message;
 import java.io.*;
 import java.net.Socket;
 /**
- * Í¨¹ı¶Ë¿ÚÅ×³öºÍ½ÓÊÕmessage°ü.
+ * é€šè¿‡ç«¯å£æŠ›å‡ºå’Œæ¥æ”¶messageåŒ….
  * 
  *
  */
@@ -13,14 +13,14 @@ import java.net.Socket;
 
 public class connect {
 	
-    private final int port = 8000;           //serverÊ¹ÓÃport
+    private final int port = 8000;           //serverä½¿ç”¨port
     private final String hostIp = "localhost";      //serverIp
     private boolean isConnected = false;
     static Socket socket=null;
     static ObjectOutputStream ob_os=null;
     static ObjectInputStream ob_is=null;
     /**
-     * ¹¹Ôìº¯Êı.
+     * æ„é€ å‡½æ•°.
      */
     public connect()
     {
@@ -28,33 +28,33 @@ public class connect {
             socket = new Socket(hostIp, port);
     	}catch (IOException e) {
             isConnected = false;
-        	System.out.println("Á¬½Ó´í");            
+        	System.out.println("è¿æ¥é”™");            
             e.printStackTrace();
         }
 /*    	try {
 			ob_is = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 		} catch (IOException e) {
 			isConnected = false;
-			System.out.println("»ñÈ¡·µ»Ø´í");    
+			System.out.println("è·å–è¿”å›é”™");    
 			e.printStackTrace();
 		}
 		*/
     }
     /**
-     * ½ÓÊÕMessage°üº¯Êı.
-     * @param messageSend MessageÀà¶ÔÏó.
-     * @return Message ½ÓÊÕµÄMessage.
+     * æ¥æ”¶MessageåŒ…å‡½æ•°.
+     * @param messageSend Messageç±»å¯¹è±¡.
+     * @return Message æ¥æ”¶çš„Message.
      */
 
     public Message connectServer(Message messageSend) {
-        Message ansMessage = new Message("³õÊ¼»¯ÀàĞÍ");
+        Message ansMessage = new Message("åˆå§‹åŒ–ç±»å‹");
         try {
 			ob_os = new ObjectOutputStream(socket.getOutputStream());
 	        ob_is = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 	        isConnected = true;
 		} catch (IOException e1) {
 			isConnected = false;
-			System.out.println("´´½¨Á÷´í");  
+			System.out.println("åˆ›å»ºæµé”™");  
 			e1.printStackTrace();
 		}
 
@@ -63,31 +63,37 @@ public class connect {
         ansMessage = (Message) ob_is.readObject();
         }catch(Exception e){
         	e.printStackTrace();
-        	System.out.println("readobject´í");
-        }return ansMessage;
+        	System.out.println("readobjecté”™");
+        }finally{
+		try{
+			socket.close();
+		   }catch(Exception e){
+			e.printStackTrace();
+		}
+	}return ansMessage;
     }
     
     
     /**
-     * Å×°üº¯Êı
-     * @param message MessageÀà¶ÔÏó.
-     * @param ob_os Êä³öÁ÷¶ÔÏó.
+     * æŠ›åŒ…å‡½æ•°
+     * @param message Messageç±»å¯¹è±¡.
+     * @param ob_os è¾“å‡ºæµå¯¹è±¡.
      */
 
     public  void sendMessage(Message message,ObjectOutputStream ob_os){
         if (!isConnected) {
-            System.out.println("Á¬½Ó½¨Á¢Ê§°Ü,²»ÄÜ·¢ËÍÏûÏ¢£¡");
+            System.out.println("è¿æ¥å»ºç«‹å¤±è´¥,ä¸èƒ½å‘é€æ¶ˆæ¯ï¼");
             return;
         }
         if (message == null) {
-            System.out.println("ÏûÏ¢²»ÄÜÎª¿Õ£¡");
+            System.out.println("æ¶ˆæ¯ä¸èƒ½ä¸ºç©ºï¼");
             return;
         }
         try {
             ob_os.writeObject(message);
             ob_os.flush();
         } catch (IOException e) {
-            System.out.print("½¨Á¢Êä³öÁ÷Ê§°Ü£¡\n");
+            System.out.print("å»ºç«‹è¾“å‡ºæµå¤±è´¥ï¼\n");
         }
     }
 
