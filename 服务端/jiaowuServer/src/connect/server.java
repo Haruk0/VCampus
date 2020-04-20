@@ -42,7 +42,7 @@ public class server {
 			}
            // CD.closeDb();
            // SD.closeDb();
-            System.out.println("断开数据库连接！");
+            System.out.println("服务器关闭！");
         }
     }
 
