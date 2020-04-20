@@ -75,7 +75,9 @@ public void run(){
             try {
                 ous.close();
             } catch(Exception ex) {ex.printStackTrace();}
-
+	    try {
+                socket.close();
+            } catch(Exception ex) {ex.printStackTrace();}
         }
 }
 
