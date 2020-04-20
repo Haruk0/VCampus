@@ -9,23 +9,19 @@ import DAO.CourseDAO;
 import DAO.StudentDAO;
 import DAO.TeacherDAO;
 /**
-* ÉèÖÃ´ò¿ª·şÎñÆ÷¶Ë¿Ú£¬Í¬Ê±ÔÊĞí½øĞĞÊı¾İ¿â·ÃÎÊ£¬ÎŞÇëÇóÊ±¹Ø±ÕÊı¾İ¿â¡£
-* @author ËÎÌìê»,Ğ»ÈÙ²ı,ÅËÕñÓî,ÖÜÑï·«.
+* è®¾ç½®æ‰“å¼€æœåŠ¡å™¨ç«¯å£ï¼ŒåŒæ—¶å…è®¸è¿›è¡Œæ•°æ®åº“è®¿é—®ï¼Œæ— è¯·æ±‚æ—¶å…³é—­æ•°æ®åº“ã€‚
+* @author å®‹å¤©æ˜Š,è°¢è£æ˜Œ,æ½˜æŒ¯å®‡,å‘¨æ‰¬å¸†.
 * @since JDK1.7.
 */
 public class server {
-    private static Connection connection;//Á¬½Ó¶ÔÏó
+    private static Connection connection;//è¿æ¥å¯¹è±¡
     static CourseDAO CD=new CourseDAO();
-    static StudentDAO SD=new StudentDAO();
-    static TeacherDAO TD=new TeacherDAO();
     public static void main(String[] args)
     {
         int port=8000;
         String host ="localhost";
         
-        /*CourseDAO CD=new CourseDAO();*/
         CD.openDb();
-        SD.openDb();
         try (ServerSocket server = new ServerSocket( port )){
             while (true) {
                 Socket socket = server.accept();
@@ -36,9 +32,17 @@ public class server {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
+            	if (socket != null) {
+				try {
+					socket.close();// å…³é—­Socket
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
            // CD.closeDb();
            // SD.closeDb();
-            System.out.println("¶Ï¿ªÊı¾İ¿âÁ¬½Ó£¡");
+            System.out.println("æ–­å¼€æ•°æ®åº“è¿æ¥ï¼");
         }
     }
 
