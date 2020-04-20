@@ -32,14 +32,6 @@ public class server {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            	if (socket != null) {
-				try {
-					socket.close();// 关闭Socket
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
             System.out.println("服务器关闭！");
         }
     }
