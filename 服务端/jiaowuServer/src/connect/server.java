@@ -40,8 +40,6 @@ public class server {
 					e.printStackTrace();
 				}
 			}
-           // CD.closeDb();
-           // SD.closeDb();
             System.out.println("服务器关闭！");
         }
     }
