@@ -23,8 +23,8 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.util.ArrayList;
 /**
-* ÏàÓ¦¿Í»§¶ËÇëÇó
-* @author ËÎÌìê»,Ğ»ÈÙ²ı,ÅËÕñÓî,ÖÜÑï·«.
+* ç›¸åº”å®¢æˆ·ç«¯è¯·æ±‚
+* @author å®‹å¤©æ˜Š,è°¢è£æ˜Œ,æ½˜æŒ¯å®‡,å‘¨æ‰¬å¸†.
 * @since JDK1.7.
 */
 
@@ -37,17 +37,17 @@ public class HandleMessageRunnable implements Runnable {
     ObjectOutputStream ous = null;
 
  /**
- * ÏìÓ¦¿Í»§¶ËµÄÁ´½ÓÇëÇó
- * @param socket socket±äÁ¿£¬´«µİ¿Í»§¶Ësocket
- * @param CD Connection±äÁ¿
+ * å“åº”å®¢æˆ·ç«¯çš„é“¾æ¥è¯·æ±‚
+ * @param socket socketå˜é‡ï¼Œä¼ é€’å®¢æˆ·ç«¯socket
+ * @param CD Connectionå˜é‡
  */
 public HandleMessageRunnable(Socket socket,CourseDAO CD) {
     this.socket = socket;
     this.connection=CourseDAO.conn;
 }
-//Ïß³ÌÖ´ĞĞµÄ²Ù×÷£¬ÏìÓ¦¿Í»§¶ËµÄÇëÇó
+//çº¿ç¨‹æ‰§è¡Œçš„æ“ä½œï¼Œå“åº”å®¢æˆ·ç«¯çš„è¯·æ±‚
 /**
- * ½¨Á¢ÊäÈëÊä³öÁ÷£¬ÈôÎŞÔò¹Ø±Õsocket
+ * å»ºç«‹è¾“å…¥è¾“å‡ºæµï¼Œè‹¥æ— åˆ™å…³é—­socket
  */
 public void run(){
     ObjectInputStream ins = null;
@@ -63,30 +63,27 @@ public void run(){
         ous.flush();
   } }}catch (IOException e) {
         // TODO Auto-generated catch block
-      System.out.println("ÒÑ¶Ï¿ªÁ¬½Ó");  
+      System.out.println("æµæ“ä½œå¤±è´¥ï¼");  
 	  //e.printStackTrace();
     } catch (ClassNotFoundException e) {
         e.printStackTrace();
     } finally{
-        //¹Ø±Õ×ÊÔ´
+        //å…³é—­èµ„æº
             try {
                ins.close();
-            } catch(Exception ex) {}
+            } catch(Exception ex) {ex.printStackTrace();}
             try {
                 ous.close();
-            } catch(Exception ex) {}
-            try {
-                socket.close();
-            } catch(Exception ex) {}
+            } catch(Exception ex) {ex.printStackTrace();}
 
         }
 }
 
 /*public void run(){  
-	System.out.println("Ïß³Ì¿ªÊ¼");
+	System.out.println("çº¿ç¨‹å¼€å§‹");
     try {
     	while(socket.isConnected()) {while(true) {
-    		System.out.println("´«ÊäĞÅÏ¢¿ªÊ¼");	
+    		System.out.println("ä¼ è¾“ä¿¡æ¯å¼€å§‹");	
     	ins = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
         ous = new ObjectOutputStream(socket.getOutputStream());
         Message message=(Message)ins.readObject();
@@ -115,19 +112,19 @@ public void run(){
         }
 }*/
 /**
- * ¸ù¾İ¿Í»§¶ËÇëÇó×ö³öÏìÓ¦£¬µ÷ÓÃÏàÓ¦µÄ²Ù×÷º¯Êı
- * @param message ¿Í»§¶Ë·¢ËÍµÄÇëÇóÊı¾İ
+ * æ ¹æ®å®¢æˆ·ç«¯è¯·æ±‚åšå‡ºå“åº”ï¼Œè°ƒç”¨ç›¸åº”çš„æ“ä½œå‡½æ•°
+ * @param message å®¢æˆ·ç«¯å‘é€çš„è¯·æ±‚æ•°æ®
  * 
  */
 public void handleMessage(Message message){
 	
     switch (message.getType()){
     /**
-     * ½øĞĞÑ¡¿ÎµÄÏà¹Ø²Ù×÷
+     * è¿›è¡Œé€‰è¯¾çš„ç›¸å…³æ“ä½œ
      * @see CourseDAO.java 
      * 
      */
-        case "»ñÈ¡ËùÓĞ¿Î³Ì":
+        case "è·å–æ‰€æœ‰è¯¾ç¨‹":
             CourseDAO DAO1=new CourseDAO();
             ArrayList<Course> a=new ArrayList<Course>();
             a=DAO1.getAllCourseA();
@@ -136,30 +133,30 @@ public void handleMessage(Message message){
             //System.out.println(name);
             CM=new Message();
             CM.setCourseArray(a);
-            CM.setType("·µ»ØËùÓĞ¿Î³Ì");
+            CM.setType("è¿”å›æ‰€æœ‰è¯¾ç¨‹");
             //ArrayList<Course> alc=new ArrayList<Course>();
             //alc=CM.getCourseArray();
             //System.out.println(alc.get(0).name);
             break;
             
-        case"Ñ¡¿Î":
+        case"é€‰è¯¾":
         	CourseDAO DAO2=new CourseDAO();
         	int returnNumber=DAO2.addCourse(String.valueOf(message.getSelectorID()),message.getSelectedID());
         	CM=new Message();
         	CM.setStatusCode(returnNumber);
-        	CM.setType("·µ»Ø²Ù×÷½á¹û");
+        	CM.setType("è¿”å›æ“ä½œç»“æœ");
         	//System.out.println(CM.getStatusCode());
         	break;
-        case"ÍË¿Î":
+        case"é€€è¯¾":
         	CourseDAO DAO0=new CourseDAO();
         	int resNumber=DAO0.delCourse(String.valueOf(message.getSelectorID()),message.getSelectedID());
         	CM=new Message();
         	CM.setStatusCode(resNumber);
-        	CM.setType("·µ»ØÍË¿Î½á¹û");
+        	CM.setType("è¿”å›é€€è¯¾ç»“æœ");
         	//System.out.println(CM.getStatusCode());
         	break;
 
-        case "»ñÈ¡¸öÈË¿Î±í":
+        case "è·å–ä¸ªäººè¯¾è¡¨":
             CourseDAO DAO3=new CourseDAO();
             ArrayList<CourseRecord> cral=new ArrayList<CourseRecord>();
             cral=DAO3.searchKeBiao(message.getSelectorID());
@@ -168,31 +165,31 @@ public void handleMessage(Message message){
             //System.out.println(name);
             CM=new Message();
             CM.setCourseRecordArray(cral);
-            CM.setType("·µ»Ø¸öÈË¿Î±í");
+            CM.setType("è¿”å›ä¸ªäººè¯¾è¡¨");
             break;
             
-        case"»ñÈ¡Ñ¡¿ÎÑ§Éú":
+        case"è·å–é€‰è¯¾å­¦ç”Ÿ":
         	CourseDAO DAO4=new CourseDAO();
         	ArrayList<CourseRecord> cral1=new ArrayList<CourseRecord>();
             cral1=DAO4.getAllStudentsA(message.getSelectedID());
             CM=new Message();
             CM.setCourseRecordArray(cral1);
-            CM.setType("·µ»ØÑ¡¿ÎÑ§Éú");
+            CM.setType("è¿”å›é€‰è¯¾å­¦ç”Ÿ");
             break;
             
-        case"´ò·Ö":
+        case"æ‰“åˆ†":
         	CourseDAO DAO5=new CourseDAO();
         	int returnNumber1=DAO5.updateCourse(message.getScore(),message.getSelectorID(),message.getSelectedID());
         	CM=new Message();
         	CM.setStatusCode(returnNumber1);
-        	CM.setType("·µ»Ø²Ù×÷½á¹û");
+        	CM.setType("è¿”å›æ“ä½œç»“æœ");
         	break;
             /**
-             * ½øĞĞÑ§¼®µÄÏà¹Ø²Ù×÷
+             * è¿›è¡Œå­¦ç±çš„ç›¸å…³æ“ä½œ
              * @see StudentDAO.java
              * @see TeacherDAO.java
              */       	
-        case "Ñ§¼®ĞÅÏ¢":
+        case "å­¦ç±ä¿¡æ¯":
             System.out.println(message.getType());
             StudentDAO DAO6=new StudentDAO();
             ArrayList<Student> a1=new ArrayList<Student>();
@@ -201,10 +198,10 @@ public void handleMessage(Message message){
 
             CM=new Message();
             CM.setStudentArray(a1);
-            CM.setType("·µ»ØÑ§¼®ĞÅÏ¢");
+            CM.setType("è¿”å›å­¦ç±ä¿¡æ¯");
             break;
             
-     case"¸üĞÂÑ§¼®ĞÅÏ¢":
+     case"æ›´æ–°å­¦ç±ä¿¡æ¯":
     	 StudentDAO DAO7=new StudentDAO();
     	 System.out.println(message.getType());
     	 DAO7.updateInfo( message.getStudentArray());
@@ -213,9 +210,9 @@ public void handleMessage(Message message){
          b=DAO7.getInfo( selectorID1);
          CM=new Message();
          CM.setStudentArray(b);
-         CM.setType("±£´æÑ§¼®ĞÅÏ¢");
+         CM.setType("ä¿å­˜å­¦ç±ä¿¡æ¯");
          break;
-     case "½ÌÊ¦ĞÅÏ¢":
+     case "æ•™å¸ˆä¿¡æ¯":
          TeacherDAO DAO8=new TeacherDAO();
          DAO8.openDb();
          ArrayList<Teacher> a8=new ArrayList<Teacher>();
@@ -224,10 +221,10 @@ public void handleMessage(Message message){
          a8=DAO8.getInfo( selectorID8);
          CM=new Message();
          CM.setTeacherArray(a8);
-         CM.setType("·µ»Ø½ÌÊ¦ĞÅÏ¢");
+         CM.setType("è¿”å›æ•™å¸ˆä¿¡æ¯");
          break;
          
-     case"¸üĞÂ½ÌÊ¦ĞÅÏ¢":
+     case"æ›´æ–°æ•™å¸ˆä¿¡æ¯":
     	TeacherDAO DAO9=new TeacherDAO();
         DAO9.openDb();
    	 	System.out.println(message.getType());
@@ -237,14 +234,14 @@ public void handleMessage(Message message){
         b9=DAO9.getInfo( selectorID9);
         CM=new Message();
         CM.setTeacherArray(b9);
-        CM.setType("±£´æ½ÌÊ¦ĞÅÏ¢");
+        CM.setType("ä¿å­˜æ•™å¸ˆä¿¡æ¯");
         break;
          /**
-          * ½øĞĞµÇÂ½µÄÏà¹Ø²Ù×÷
+          * è¿›è¡Œç™»é™†çš„ç›¸å…³æ“ä½œ
           * @see UserDAO.java
           */ 
-     case "ÇëÇóµÇÂ½":
-     	System.out.println("ÓÃ»§ÇëÇóµÇÂ½");
+     case "è¯·æ±‚ç™»é™†":
+     	System.out.println("ç”¨æˆ·è¯·æ±‚ç™»é™†");
         String n = new String(message.getUser().number);
 		String p = new String(message.getUser().pwd);
         UserDAO ud = new UserDAO();
@@ -252,39 +249,39 @@ public void handleMessage(Message message){
         System.out.println(backUser.name);
 	    if (backUser.tag == 1) {
 	    	
-		    CM= new Message("µÇÂ½³É¹¦"); 
+		    CM= new Message("ç™»é™†æˆåŠŸ"); 
 		    CM.setUser(backUser);
 		    
 	       } 
 	    
 	     if (backUser.tag == 2) {
-	 		 CM= new Message("µÇÂ½³É¹¦");
+	 		 CM= new Message("ç™»é™†æˆåŠŸ");
 	 		 CM.setUser(backUser);
 
 	 	   }
 	     if(backUser.tag==0) {
-		     CM= new Message("ÓÃ»§Ãû»òÃÜÂë´íÎó");
+		     CM= new Message("ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
 		     }
 	       
 	        break;
 	        
-     case "ÇëÇóĞŞ¸ÄÃÜÂë":
-     	System.out.println("ÓÃ»§ÇëÇóĞŞ¸ÄÃÜÂë");
+     case "è¯·æ±‚ä¿®æ”¹å¯†ç ":
+     	System.out.println("ç”¨æˆ·è¯·æ±‚ä¿®æ”¹å¯†ç ");
         CM=new Message();
         String n1 = new String(message.getUser().number);
 		String p1 = new String(message.getUser().pwd);
         UserDAO ud1 = new UserDAO();
         Users backUser1 = ud1.signJudge(n1, p1);
         	if (backUser1.tag!=0) {
-        		CM= new Message("¿ÉÒÔĞŞ¸ÄÃÜÂë");    		
+        		CM= new Message("å¯ä»¥ä¿®æ”¹å¯†ç ");    		
  
 	        } else {
-		        CM= new Message("ÓÃ»§Ãû»òÃÜÂë´íÎó");
+		        CM= new Message("ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
 
 	          }  
 	        break;
 	        
-     case "ĞŞ¸ÄÃÜÂë":
+     case "ä¿®æ”¹å¯†ç ":
      	UserDAO ud2 = new UserDAO();
      	String num = new String(message.getUser().number);
      	String np = new String(message.getUser().pwd);
@@ -293,11 +290,11 @@ public void handleMessage(Message message){
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-     	CM= new Message("ĞŞ¸ÄÃÜÂëÍê³É");
+     	CM= new Message("ä¿®æ”¹å¯†ç å®Œæˆ");
 	    System.out.println("CM.type = "+CM.getType());  
 	    break;
          
- /*    case "½ÌÊ¦ĞÅÏ¢":
+ /*    case "æ•™å¸ˆä¿¡æ¯":
          
          TeacherDAO DAO8=new TeacherDAO();
          ArrayList<Teacher> a8=new ArrayList<Teacher>();
@@ -306,11 +303,11 @@ public void handleMessage(Message message){
 
          CM=new Message();
          CM.setTeacherArray(a8);
-         CM.setType("·µ»Ø½ÌÊ¦ĞÅÏ¢");
+         CM.setType("è¿”å›æ•™å¸ˆä¿¡æ¯");
         // System.out.println(CM.getTeacherArray().get(0).name);
          break;
          
-  case"¸üĞÂ½ÌÊ¦ĞÅÏ¢":
+  case"æ›´æ–°æ•™å¸ˆä¿¡æ¯":
  	 TeacherDAO DAO9=new TeacherDAO();
  	 System.out.println(message.getType());
  	 DAO9.updateInfo( message.getTeacherArray());
@@ -319,16 +316,16 @@ public void handleMessage(Message message){
       b9=DAO9.getInfo( selectorID9);
       CM=new Message();
       CM.setTeacherArray(b9);
-      CM.setType("±£´æ½ÌÊ¦ĞÅÏ¢");
+      CM.setType("ä¿å­˜æ•™å¸ˆä¿¡æ¯");
       break;*/
 	    
 	    /**
-         * ½øĞĞÉÌµêµÄÏà¹Ø²Ù×÷
+         * è¿›è¡Œå•†åº—çš„ç›¸å…³æ“ä½œ
          * @see GoodsDAO.java
          * @see	GoodsRecordDAO.JAVA
          */ 
    
-case "»ñÈ¡ÉÌÆ·ÁĞ±í":
+case "è·å–å•†å“åˆ—è¡¨":
 	//System.out.println('1');
     GoodsDao myDAO1=new GoodsDao();
     ArrayList<Goods> goods=new ArrayList<Goods>();
@@ -338,17 +335,17 @@ case "»ñÈ¡ÉÌÆ·ÁĞ±í":
     System.out.println(name);*/
     CM=new Message();
     CM.setGoods(goods);
-    CM.setType("·µ»ØÉÌÆ·ÁĞ±í");
+    CM.setType("è¿”å›å•†å“åˆ—è¡¨");
     
     break;
-case "¼ÓÈë¹ºÎï³µ":
+case "åŠ å…¥è´­ç‰©è½¦":
     GoodsRecordDao myDAO2=new GoodsRecordDao();
     myDAO2.addGoods(message.getSelectorID(), message.getSelectedID(), message.getGoodsnumber());
     /*String name=new String();
     name=a.get(0).name;
     System.out.println(name);*/
     break;
-case "¹ºÂò":
+case "è´­ä¹°":
     GoodsRecordDao myDAO=new GoodsRecordDao();
     int result=myDAO.updateGoodsRecord(message.getSelectorID(), message.getSelectedID());
     /*String name=new String();
@@ -356,9 +353,9 @@ case "¹ºÂò":
     System.out.println(name);*/
     CM=new Message();
 	CM.setStatusCode(result);
-	CM.setType("·µ»Ø²Ù×÷½á¹û");
+	CM.setType("è¿”å›æ“ä½œç»“æœ");
     break;
-case "»ñÈ¡¹ºÎï³µÁĞ±í":
+case "è·å–è´­ç‰©è½¦åˆ—è¡¨":
     GoodsRecordDao myDAO3=new GoodsRecordDao();
     ArrayList<GoodsRecord> goodsrecord=new ArrayList<GoodsRecord>();
     goodsrecord=myDAO3.getAllgoodsrecrod(message.getSelectorID());
@@ -369,9 +366,9 @@ case "»ñÈ¡¹ºÎï³µÁĞ±í":
     CM=new Message();
     CM.setGoodsrecord(goodsrecord);
     System.out.println("CM = "+CM.getGoodsrecord());
-    CM.setType("·µ»Ø¹ºÎï³µÁĞ±í");
+    CM.setType("è¿”å›è´­ç‰©è½¦åˆ—è¡¨");
     break;
-case "Ñ¡ÉÌÆ·":
+case "é€‰å•†å“":
     GoodsDao myDAO4=new GoodsDao();
     ArrayList<Goods> searchgoods=new ArrayList<Goods>();
    searchgoods=myDAO4.seachGoods(message.getGoodsname());
@@ -380,13 +377,13 @@ case "Ñ¡ÉÌÆ·":
     System.out.println(name);*/
     CM=new Message();
     CM.setGoods(searchgoods);
-    CM.setType("·µ»Ø¹ºÎï³µÁĞ±í");
+    CM.setType("è¿”å›è´­ç‰©è½¦åˆ—è¡¨");
     break;
     /**
-     * ½øĞĞÍ¼Êé¹İµÄÏà¹Ø²Ù×÷
+     * è¿›è¡Œå›¾ä¹¦é¦†çš„ç›¸å…³æ“ä½œ
      * @see BookDAO.java
      */ 
-case "²éÔÄÊéµ¥":
+case "æŸ¥é˜…ä¹¦å•":
     
     BookDAO DAO11=new BookDAO();
     ArrayList<Book> a11=new ArrayList<Book>();
@@ -394,9 +391,9 @@ case "²éÔÄÊéµ¥":
 
     CM=new Message();
     CM.setBook(a11);
-    CM.setType("·µ»ØÊéµ¥");
+    CM.setType("è¿”å›ä¹¦å•");
     break;
-case "²éÔÄ¼ÇÂ¼":
+case "æŸ¥é˜…è®°å½•":
  
  BookDAO mDAO=new BookDAO();
  ArrayList<BookRecord> record=new ArrayList<BookRecord>();
@@ -404,9 +401,9 @@ case "²éÔÄ¼ÇÂ¼":
  System.out.println("record = "+record);
  CM=new Message();
  CM.setBookrecord(record);
- CM.setType("·µ»ØÊéµ¥");
+ CM.setType("è¿”å›ä¹¦å•");
  break;
-/*case"¸üĞÂÑ§¼®ĞÅÏ¢":
+/*case"æ›´æ–°å­¦ç±ä¿¡æ¯":
  BookDAO DAO2=new BookDAO();
  System.out.println(message.getType());
  DAO2.updateInfo( message.getBookArray());
@@ -415,25 +412,25 @@ case "²éÔÄ¼ÇÂ¼":
  b=DAO2.getInfo( selectorID1);
  CM=new Message();
  CM.setBookArray(b);
- CM.setType("±£´æÑ§¼®ĞÅÏ¢");
+ CM.setType("ä¿å­˜å­¦ç±ä¿¡æ¯");
  break;*/
-case "²éÔÄÊéÃû":
+case "æŸ¥é˜…ä¹¦å":
  BookDAO DAO21=new BookDAO();
  ArrayList<Book> b1=new ArrayList<Book>();
  b1=DAO21.SearchName(message.search);
  CM=new Message();
  CM.setBook(b1);
- CM.setType("·µ»ØÊéÃûËÑË÷½á¹û");
+ CM.setType("è¿”å›ä¹¦åæœç´¢ç»“æœ");
  break;
-case "²éÔÄ×÷Õß":
+case "æŸ¥é˜…ä½œè€…":
  BookDAO DAO31=new BookDAO();
  ArrayList<Book> c=new ArrayList<Book>();
  c=DAO31.SearchWriter(message.search);
  CM=new Message();
  CM.setBook(c);
- CM.setType("·µ»Ø×÷ÕßËÑË÷½á¹û");
+ CM.setType("è¿”å›ä½œè€…æœç´¢ç»“æœ");
  break;
-case "½èÊé":
+case "å€Ÿä¹¦":
 BookDAO myDAO21=new BookDAO();
  myDAO21.Borrow(message.getSelectorID(), message.getSelectedID());
  System.out.println("message.getSelectedID()"+message.getSelectedID());
@@ -441,8 +438,8 @@ BookDAO myDAO21=new BookDAO();
  name=a.get(0).name;
  System.out.println(name);*/
  break;
-case "»¹Êé":
- System.out.println("½øĞĞ»¹Êé²Ù×÷");
+case "è¿˜ä¹¦":
+ System.out.println("è¿›è¡Œè¿˜ä¹¦æ“ä½œ");
  BookDAO myDAO31=new BookDAO();
  myDAO31.Returnbook(message.getSelectorID(), message.getSelectedID());
  
